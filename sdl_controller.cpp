@@ -1,4 +1,4 @@
-#include "sdl_controller.h"
+#include "headers/sdl_controller.h"
 
 SdlController::SdlController() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -24,7 +24,7 @@ SdlController::SdlController() {
 	SDL_ShowCursor(SDL_DISABLE);
 
 	// Load media
-	_charset = loadBmp("./cs8x8.bmp");
+	_charset = loadBmp("./media/cs8x8.bmp");
 	SDL_SetColorKey(_charset, true, 0x000000);
 
 	// Assign colors

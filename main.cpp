@@ -3,8 +3,8 @@
 #include<stdio.h>
 #include<string.h>
 
-#include "sdl_controller.h"
-#include "spy_hunter.h"
+#include "headers/sdl_controller.h"
+#include "headers/spy_hunter.h"
 
 // main
 #ifdef __cplusplus
