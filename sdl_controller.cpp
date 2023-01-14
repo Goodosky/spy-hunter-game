@@ -64,8 +64,7 @@ SDL_Surface* SdlController::loadBmp(const char* filepath) {
 	return bmp;
 }
 
-void SdlController::updateTimeBasedValues(bool is_resuming = false) {
-
+void SdlController::updateDelta(bool is_resuming = false) {
 	if (is_resuming) {
 		_t1 = SDL_GetTicks();
 		_deltaTime = 0;
@@ -75,7 +74,9 @@ void SdlController::updateTimeBasedValues(bool is_resuming = false) {
 		_deltaTime = (_t2 - _t1) * 0.001; // ms * 0.001 = seconds
 		_t1 = _t2;
 	}
+};
 
+void SdlController::updateDeltaBasedValues() {
 	_worldTime += _deltaTime;
 	_fpsTimer += _deltaTime;
 
@@ -141,6 +142,7 @@ void SdlController::drawLegend(double score) {
 	y = LEGEND_OFFSET_Y + 21;
 	drawString(x, y, _legendText);
 }
+
 
 double SdlController::getDelta() {
 	return _deltaTime;

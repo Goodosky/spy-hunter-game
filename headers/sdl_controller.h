@@ -27,7 +27,8 @@ public:
 
 	SDL_Surface* loadBmp(const char* filepath);
 
-	void updateTimeBasedValues(bool is_resuming);
+	void updateDelta(bool is_resuming);
+	void updateDeltaBasedValues();
 
 	void clearScreen();
 	void refreshScreen();

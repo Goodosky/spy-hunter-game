@@ -35,6 +35,7 @@ enum Turning {
 #define LEGEND_OFFSET_X 100
 #define LEGEND_OFFSET_Y 5
 
+
 // Game - road
 #define INITIAL_ROAD_START 150
 #define INITIAL_ROAD_END SCREEN_WIDTH - 150
@@ -42,7 +43,10 @@ enum Turning {
 #define ROAD_TURN_POSSIBILITY 1000 // 4 = 100% | more = less possibility
 
 // Game - player
-#define  TURN_SPEED 400
+#define TURN_SPEED 400
+
+// Game - others
+#define FRAME_CAP 100
 
 // Colors
 

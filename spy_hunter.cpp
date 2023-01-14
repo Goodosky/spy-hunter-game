@@ -86,9 +86,12 @@ void SpyHunter::drawRoad() {
 }
 
 void SpyHunter::drawFrame(bool is_resuming) {
-	_sdl.clearScreen();
-	_sdl.updateTimeBasedValues(is_resuming);
+	_sdl.updateDelta(is_resuming);
 	_delta = _sdl.getDelta();
+	//_distance = 400 * _delta;
+
+	_sdl.clearScreen();
+	_sdl.updateDeltaBasedValues();
 	_score += _delta;
 
 	drawRoad();

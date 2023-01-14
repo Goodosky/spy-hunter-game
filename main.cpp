@@ -20,7 +20,17 @@ int main(int argc, char** argv) {
 
 	quit = is_pause = is_resuming = false;
 
+	double t1, t2, delta;
+	t1 = SDL_GetTicks();
+
 	while (!quit) {
+		if (FRAME_CAP) {
+			t2 = SDL_GetTicks();
+			delta = (t2 - t1);
+			if (delta < 1000 / FRAME_CAP) continue;
+			t1 = t2;
+		}
+
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
