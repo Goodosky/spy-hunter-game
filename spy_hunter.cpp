@@ -49,38 +49,38 @@ void SpyHunter::addRoadLevel() {
 	if (random == 0 || random == 1) {
 		// We change start
 		int start_shift = random == 0 ? ROAD_TURN_SIZE : -ROAD_TURN_SIZE;
-		int new_start = _road[SCREEN_HEIGHT - 1].start + start_shift;
+		int new_start = _road[0].start + start_shift;
 		if (new_start < INITIAL_ROAD_START && new_start > ROAD_TURN_SIZE) {
-			_road[SCREEN_HEIGHT].start = _road[SCREEN_HEIGHT - 1].start + start_shift;
+			_road[0].start = _road[0].start + start_shift;
 		}
 	}
 
 	if (random == 2 || random == 3) {
 		// We change end
 		int end_shift = random == 2 ? ROAD_TURN_SIZE : -ROAD_TURN_SIZE;
-		int new_end = _road[SCREEN_HEIGHT - 1].end + end_shift;
+		int new_end = _road[0].end + end_shift;
 		if (new_end > INITIAL_ROAD_END && new_end < SCREEN_WIDTH - ROAD_TURN_SIZE) {
-			_road[SCREEN_HEIGHT].end = _road[SCREEN_HEIGHT - 1].end + end_shift;
+			_road[0].end = _road[0].end + end_shift;
 		}
 	}
 }
 
 void SpyHunter::drawRoad() {
-	for (int y = 0; y <= SCREEN_HEIGHT; y++) {
+	for (int y = SCREEN_HEIGHT; y >= 0; y--) {
 		// Draw road level
 		//cout << _road[y].start << endl;
 		int road_width = _road[y].end - _road[y].start;
 		_sdl.drawRectangle(_road[y].start, y, road_width, 1, _sdl.colors.road);
 
 		// set new values for the next frame
-		if (y == SCREEN_HEIGHT) {
+		if (y == 0) {
 			// Set new road level
 			addRoadLevel();
 		}
 		else {
 			// Copy from next road level (last one fade out)
-			_road[y].start = _road[y + 1].start;
-			_road[y].end = _road[y + 1].end;
+			_road[y].start = _road[y - 1].start;
+			_road[y].end = _road[y - 1].end;
 		}
 	}
 }
