@@ -6,11 +6,6 @@
 #ifndef SDL_CONTROLLER
 #define SDL_CONTROLLER
 
-extern "C" {
-#include"./SDL2-2.0.10/include/SDL.h"
-#include"./SDL2-2.0.10/include/SDL_main.h"
-}
-
 class SdlController
 {
 private:
@@ -32,7 +27,7 @@ public:
 
 	SDL_Surface* loadBmp(const char* filepath);
 
-	void updateTimeBasedValues();
+	void updateTimeBasedValues(bool is_resuming);
 
 	void clearScreen();
 	void refreshScreen();

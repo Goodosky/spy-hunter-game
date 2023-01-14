@@ -1,7 +1,6 @@
 #include "headers/config.h"
 #include "headers/sdl_controller.h"
 
-
 SdlController::SdlController() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		printf("SDL_Init error: %s\n", SDL_GetError());
@@ -65,11 +64,17 @@ SDL_Surface* SdlController::loadBmp(const char* filepath) {
 	return bmp;
 }
 
-void SdlController::updateTimeBasedValues() {
+void SdlController::updateTimeBasedValues(bool is_resuming = false) {
 
-	_t2 = SDL_GetTicks();
-	_deltaTime = (_t2 - _t1) * 0.001; // ms * 0.001 = seconds
-	_t1 = _t2;
+	if (is_resuming) {
+		_t1 = SDL_GetTicks();
+		_deltaTime = 0;
+	}
+	else {
+		_t2 = SDL_GetTicks();
+		_deltaTime = (_t2 - _t1) * 0.001; // ms * 0.001 = seconds
+		_t1 = _t2;
+	}
 
 	_worldTime += _deltaTime;
 	_fpsTimer += _deltaTime;
@@ -82,8 +87,6 @@ void SdlController::updateTimeBasedValues() {
 
 	_frames++;
 }
-
-
 
 
 void SdlController::drawString(int x, int y, const char* text) {
