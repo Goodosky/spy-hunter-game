@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 		if (FRAME_CAP) {
 			t2 = SDL_GetTicks();
 			delta = (t2 - t1);
-			if (delta < 1000 / FRAME_CAP) continue;
+			if (FRAME_CAP && delta < 1000 / FRAME_CAP) continue;
 			t1 = t2;
 		}
 

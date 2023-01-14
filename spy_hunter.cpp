@@ -12,6 +12,7 @@ SpyHunter::SpyHunter() {
 void SpyHunter::startGame() {
 	// Set default values
 	_score = 0;
+	_elapsedMapUpdate = MAP_REFRESH_INTERVAL;
 
 	for (int y = 0; y <= SCREEN_HEIGHT; y++) {
 		_road[y].start = INITIAL_ROAD_START;
@@ -40,62 +41,75 @@ void SpyHunter::turn(Turning direction) {
 	_turning = direction;
 }
 
-
-void SpyHunter::addRoadLevel() {
-	// Get a random number in range from 0 to ROAD_TURN_POSSIBILITY-1
-	int random = rand() % ROAD_TURN_POSSIBILITY;
-
-	// and assign an action (possibility: 4/TURN_POSSIBILITY-1)
-	if (random == 0 || random == 1) {
-		// We change start
-		int start_shift = random == 0 ? ROAD_TURN_SIZE : -ROAD_TURN_SIZE;
-		int new_start = _road[0].start + start_shift;
-		if (new_start < INITIAL_ROAD_START && new_start > ROAD_TURN_SIZE) {
-			_road[0].start = _road[0].start + start_shift;
-		}
-	}
-
-	if (random == 2 || random == 3) {
-		// We change end
-		int end_shift = random == 2 ? ROAD_TURN_SIZE : -ROAD_TURN_SIZE;
-		int new_end = _road[0].end + end_shift;
-		if (new_end > INITIAL_ROAD_END && new_end < SCREEN_WIDTH - ROAD_TURN_SIZE) {
-			_road[0].end = _road[0].end + end_shift;
-		}
+void SpyHunter::drawRoad() {
+	for (int y = SCREEN_HEIGHT; y >= 0; y--) {
+		int road_width = _road[y].end - _road[y].start;
+		_sdl.drawRectangle(_road[y].start, y, road_width, 1, _sdl.colors.road);
 	}
 }
 
-void SpyHunter::drawRoad() {
-	for (int y = SCREEN_HEIGHT; y >= 0; y--) {
-		// Draw road level
-		//cout << _road[y].start << endl;
-		int road_width = _road[y].end - _road[y].start;
-		_sdl.drawRectangle(_road[y].start, y, road_width, 1, _sdl.colors.road);
+void SpyHunter::addRoadLevel() {
+	int start = _road[0].start;
+	int end = _road[0].end;
 
-		// set new values for the next frame
-		if (y == 0) {
-			// Set new road level
+	// Draw randomly change the value of the start and end of the road:
+	// 1. Get a random number in range from 0 to ROAD_TURN_PROBABILITY-1
+	int random = rand() % ROAD_TURN_PROBABILITY;
+
+	// Match change (propbability to change for each direction: 2/ROAD_TURN_PROBABILITY-1)
+	if (random == 0 || random == 1) {
+		// We are changing start
+		int start_shift = random == 0 ? ROAD_TURN_SIZE : -ROAD_TURN_SIZE;
+		if (_road[0].start + start_shift < INITIAL_ROAD_START && _road[0].start + start_shift > ROAD_TURN_SIZE) {
+			start = _road[0].start + start_shift;
+		}
+	}
+
+	else if (random == 2 || random == 3) {
+		// We are changing end
+		int end_shift = random == 2 ? ROAD_TURN_SIZE : -ROAD_TURN_SIZE;
+		if (_road[0].end + end_shift > INITIAL_ROAD_END && _road[0].end + end_shift < SCREEN_WIDTH - ROAD_TURN_SIZE) {
+			end = _road[0].end + end_shift;
+		}
+	}
+
+	// Add new values to _road
+	for (int y = 0; y <= ROAD_LEVEL_HEIGHT; y++) {
+		_road[y].start = start;
+		_road[y].end = end;
+	}
+}
+
+void SpyHunter::updateRoad() {
+	// set new _road values for the next frame
+	for (int y = SCREEN_HEIGHT; y >= 0; y--) {
+		if (y <= ROAD_LEVEL_HEIGHT) {
 			addRoadLevel();
 		}
 		else {
 			// Copy from next road level (last one fade out)
-			_road[y].start = _road[y - 1].start;
-			_road[y].end = _road[y - 1].end;
+			_road[y].start = _road[y - ROAD_LEVEL_HEIGHT].start;
+			_road[y].end = _road[y - ROAD_LEVEL_HEIGHT].end;
 		}
 	}
 }
 
+
 void SpyHunter::drawFrame(bool is_resuming) {
 	_sdl.updateDelta(is_resuming);
-	_delta = _sdl.getDelta();
-	//_distance = 400 * _delta;
+	_delta = _sdl.getDelta(); // delta in seconds
+	_elapsedMapUpdate += _delta;
 
 	_sdl.clearScreen();
 	_sdl.updateDeltaBasedValues();
 	_score += _delta;
 
-	drawRoad();
+	if (_elapsedMapUpdate >= MAP_REFRESH_INTERVAL) {
+		updateRoad();
+		_elapsedMapUpdate = 0;
+	}
 
+	drawRoad();
 	drawPlayer();
 
 	_sdl.drawLegend(_score);
