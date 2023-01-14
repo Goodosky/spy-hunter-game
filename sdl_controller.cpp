@@ -125,7 +125,7 @@ void SdlController::drawRectangle(int x, int y, int width, int height, Uint32 co
 	SDL_FillRect(screen, &rect, color);
 }
 
-void SdlController::drawLegend(int score) {
+void SdlController::drawLegend(double score) {
 	drawRectangle(LEGEND_OFFSET_X, LEGEND_OFFSET_Y, SCREEN_WIDTH - 2 * LEGEND_OFFSET_X, 36, colors.legend_bg);
 
 	sprintf(_legendText, "czas trwania = %.1lf s  %.0lf klatek / s", _worldTime, _fps);

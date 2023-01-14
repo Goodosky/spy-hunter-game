@@ -42,7 +42,7 @@ public:
 	void drawSprite(SDL_Surface* sprite, int x, int y);
 	void drawPixel(int x, int y, Uint32 color);
 
-	void drawLegend(int score);
+	void drawLegend(double score);
 
 	double getDelta();
 

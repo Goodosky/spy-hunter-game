@@ -9,16 +9,16 @@ class SpyHunter
 {
 private:
 	SdlController _sdl;
-	int _score = 0;
-	double _delta;
+	double _score, _delta;
 
 	struct RoadData {
-		int start = INITIAL_ROAD_START;
-		int end = INITIAL_ROAD_END;
+		int start, end;
 	} _road[SCREEN_HEIGHT + 1];
 
 public:
 	SpyHunter();
+
+	void startGame();
 
 	void addRoadLevel();
 	void drawRoad();

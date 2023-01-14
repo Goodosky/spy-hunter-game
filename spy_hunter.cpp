@@ -5,7 +5,18 @@ using namespace std;
 
 
 SpyHunter::SpyHunter() {
+	startGame();
 }
+
+void SpyHunter::startGame() {
+	_score = 0;
+
+	for (int y = 0; y <= SCREEN_HEIGHT; y++) {
+		_road[y].start = INITIAL_ROAD_START;
+		_road[y].end = INITIAL_ROAD_END;
+	}
+}
+
 
 void SpyHunter::addRoadLevel() {
 	// Get a random number in range 0-999
@@ -55,6 +66,7 @@ void SpyHunter::drawFrame() {
 	_sdl.clearScreen();
 	_sdl.updateTimeBasedValues();
 	_delta = _sdl.getDelta();
+	_score += _delta;
 
 	drawRoad();
 
