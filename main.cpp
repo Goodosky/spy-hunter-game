@@ -3,7 +3,7 @@
 #include<stdio.h>
 #include<string.h>
 
-#include "headers/sdl_controller.h"
+
 #include "headers/spy_hunter.h"
 
 // main
@@ -13,36 +13,30 @@ extern "C"
 
 
 int main(int argc, char** argv) {
+	bool quit = false;
 	SDL_Event event;
-	SdlController sdl;
 	SpyHunter game;
 
-	while (true) {
+	while (!quit) {
 		//if (game.getIsPause) continue;
-
-		sdl.clearScreen();
-		sdl.updateTimeBasedValues();
-		sdl.drawLegend();
-
-		sdl.refreshScreen();
 
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
-				if (event.key.keysym.sym == SDLK_ESCAPE) exit(0);
-				//else if (event.key.keysym.sym == SDLK_UP) etiSpeed = 2.0;
-				//else if (event.key.keysym.sym == SDLK_DOWN) etiSpeed = 0.3;
+				if (event.key.keysym.sym == SDLK_ESCAPE) quit = true;
 				break;
 			case SDL_KEYUP:
 				break;
 			case SDL_QUIT:
-				exit(0);
+				quit = true;
 				break;
 			};
 		};
+
+		game.drawFrame();
 	};
 
-	sdl.freeAllSurfacesAndQuit();
+	game.endGame();
 
 	return 0;
 };

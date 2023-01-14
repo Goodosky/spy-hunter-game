@@ -1,4 +1,6 @@
+#include "headers/config.h"
 #include "headers/sdl_controller.h"
+
 
 SdlController::SdlController() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -28,10 +30,9 @@ SdlController::SdlController() {
 	SDL_SetColorKey(_charset, true, 0x000000);
 
 	// Assign colors
-	_colors.black = SDL_MapRGB(screen->format, 0x00, 0x00, 0x00);
-	_colors.red = SDL_MapRGB(screen->format, 0xFF, 0x00, 0x00);
-	_colors.green = SDL_MapRGB(screen->format, 0x00, 0xFF, 0x00);
-	_colors.blue = SDL_MapRGB(screen->format, 0x11, 0x11, 0xCC);
+	colors.legend_bg = SDL_MapRGB(screen->format, LEGEND_BG_COLOR.r, LEGEND_BG_COLOR.g, LEGEND_BG_COLOR.b);
+	colors.road = SDL_MapRGB(screen->format, ROAD_COLOR.r, ROAD_COLOR.g, ROAD_COLOR.b);
+	colors.grass = SDL_MapRGB(screen->format, GRASS_COLOR.r, GRASS_COLOR.g, GRASS_COLOR.b);
 
 	// Set deflaut value for private variables
 	_deltaTime = _worldTime = _fpsTimer = _fps = 0;
@@ -41,9 +42,8 @@ SdlController::SdlController() {
 
 
 void SdlController::clearScreen() {
-	SDL_FillRect(screen, NULL, _colors.black); // draw bg
+	SDL_FillRect(screen, NULL, colors.grass); // draw bg
 }
-
 
 void SdlController::refreshScreen() {
 	SDL_UpdateTexture(_scrtex, NULL, screen->pixels, screen->pitch);
@@ -51,7 +51,6 @@ void SdlController::refreshScreen() {
 	SDL_RenderCopy(_renderer, _scrtex, NULL, NULL);
 	SDL_RenderPresent(_renderer);
 }
-
 
 SDL_Surface* SdlController::loadBmp(const char* filepath) {
 	// wczytanie obrazka cs8x8.bmp
@@ -65,7 +64,6 @@ SDL_Surface* SdlController::loadBmp(const char* filepath) {
 
 	return bmp;
 }
-
 
 void SdlController::updateTimeBasedValues() {
 
@@ -86,19 +84,6 @@ void SdlController::updateTimeBasedValues() {
 }
 
 
-void SdlController::drawLegend() {
-	drawRectangle(LEGEND_OFFSET_X, LEGEND_OFFSET_Y, SCREEN_WIDTH - 2 * LEGEND_OFFSET_X, 36, _colors.LEGEND_BG);
-
-	sprintf(_legendText, "czas trwania = %.1lf s  %.0lf klatek / s", _worldTime, _fps);
-	int x = screen->w / 2 - strlen(_legendText) * 8 / 2;
-	int y = LEGEND_OFFSET_Y + 5;
-	drawString(x, y, _legendText);
-
-	sprintf(_legendText, "Esc - wyjscie, %c - lewo, %c - prawo", ARROW_LEFT, ARROW_RIGHT);
-	x = screen->w / 2 - strlen(_legendText) * 8 / 2;
-	y = LEGEND_OFFSET_Y + 21;
-	drawString(x, y, _legendText);
-}
 
 
 void SdlController::drawString(int x, int y, const char* text) {
@@ -122,7 +107,6 @@ void SdlController::drawString(int x, int y, const char* text) {
 	};
 }
 
-
 void SdlController::drawSprite(SDL_Surface* sprite, int x, int y) {
 	int offset_x = sprite->w / 2;
 	int offset_y = sprite->h / 2;
@@ -130,17 +114,40 @@ void SdlController::drawSprite(SDL_Surface* sprite, int x, int y) {
 	SDL_BlitSurface(sprite, NULL, screen, &dest_rect);
 }
 
-
 void SdlController::drawPixel(int x, int y, Uint32 color) {
 	int bytes_per_pixel = screen->format->BytesPerPixel;
 	Uint8* pixel_address = (Uint8*)screen->pixels + y * screen->pitch + x * bytes_per_pixel;
 	*(Uint32*)pixel_address = color;
 };
 
-
 void SdlController::drawRectangle(int x, int y, int width, int height, Uint32 color) {
 	SDL_Rect rect = { x, y, width, height };
 	SDL_FillRect(screen, &rect, color);
+}
+
+
+void SdlController::drawRoad() {
+
+	//// Draw the road
+	//for (int i = 0; i < SCREEN_WIDTH; i += roadWidth) {
+	//	for (int j = SCREEN_HEIGHT / 2; j < SCREEN_HEIGHT; j += 32) {
+	//		drawSprite(i, j, _charset, 0, 0, roadWidth, 32, colors.black);
+	//	}
+	//}
+}
+
+void SdlController::drawLegend() {
+	drawRectangle(LEGEND_OFFSET_X, LEGEND_OFFSET_Y, SCREEN_WIDTH - 2 * LEGEND_OFFSET_X, 36, colors.legend_bg);
+
+	sprintf(_legendText, "czas trwania = %.1lf s  %.0lf klatek / s", _worldTime, _fps);
+	int x = screen->w / 2 - strlen(_legendText) * 8 / 2;
+	int y = LEGEND_OFFSET_Y + 5;
+	drawString(x, y, _legendText);
+
+	sprintf(_legendText, "Esc - wyjscie, %c - lewo, %c - prawo", ARROW_LEFT, ARROW_RIGHT);
+	x = screen->w / 2 - strlen(_legendText) * 8 / 2;
+	y = LEGEND_OFFSET_Y + 21;
+	drawString(x, y, _legendText);
 }
 
 
