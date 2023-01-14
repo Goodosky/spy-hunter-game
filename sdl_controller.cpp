@@ -125,18 +125,7 @@ void SdlController::drawRectangle(int x, int y, int width, int height, Uint32 co
 	SDL_FillRect(screen, &rect, color);
 }
 
-
-void SdlController::drawRoad() {
-
-	//// Draw the road
-	//for (int i = 0; i < SCREEN_WIDTH; i += roadWidth) {
-	//	for (int j = SCREEN_HEIGHT / 2; j < SCREEN_HEIGHT; j += 32) {
-	//		drawSprite(i, j, _charset, 0, 0, roadWidth, 32, colors.black);
-	//	}
-	//}
-}
-
-void SdlController::drawLegend() {
+void SdlController::drawLegend(int score) {
 	drawRectangle(LEGEND_OFFSET_X, LEGEND_OFFSET_Y, SCREEN_WIDTH - 2 * LEGEND_OFFSET_X, 36, colors.legend_bg);
 
 	sprintf(_legendText, "czas trwania = %.1lf s  %.0lf klatek / s", _worldTime, _fps);
@@ -144,11 +133,15 @@ void SdlController::drawLegend() {
 	int y = LEGEND_OFFSET_Y + 5;
 	drawString(x, y, _legendText);
 
-	sprintf(_legendText, "Esc - wyjscie, %c - lewo, %c - prawo", ARROW_LEFT, ARROW_RIGHT);
+	sprintf(_legendText, "Score: %.lf", score);
 	x = screen->w / 2 - strlen(_legendText) * 8 / 2;
 	y = LEGEND_OFFSET_Y + 21;
 	drawString(x, y, _legendText);
 }
+
+double SdlController::getDelta() {
+	return _deltaTime;
+};
 
 
 void SdlController::freeAllSurfacesAndQuit() {

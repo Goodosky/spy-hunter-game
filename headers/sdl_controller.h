@@ -42,8 +42,9 @@ public:
 	void drawSprite(SDL_Surface* sprite, int x, int y);
 	void drawPixel(int x, int y, Uint32 color);
 
-	void drawRoad();
-	void drawLegend();
+	void drawLegend(int score);
+
+	double getDelta();
 
 	void freeAllSurfacesAndQuit();
 };

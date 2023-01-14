@@ -6,12 +6,9 @@
 #define SCREEN_HEIGHT 480
 
 // Legend
-#define LEGEND_BG blue // look at the Colors struct to check the available colors
 #define FPS_COUNTER_REFRESH_INTERVAL 0.5 // in seconds
 #define LEGEND_OFFSET_X 100
 #define LEGEND_OFFSET_Y 5
-#define ARROW_LEFT '\032'
-#define ARROW_RIGHT '\033'
 
 // Game - road (everyting in px)
 #define INITIAL_ROAD_START 150

@@ -54,10 +54,11 @@ void SpyHunter::drawRoad() {
 void SpyHunter::drawFrame() {
 	_sdl.clearScreen();
 	_sdl.updateTimeBasedValues();
+	_delta = _sdl.getDelta();
 
 	drawRoad();
 
-	_sdl.drawLegend();
+	_sdl.drawLegend(_score);
 	_sdl.refreshScreen();
 }
 

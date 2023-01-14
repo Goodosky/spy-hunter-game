@@ -9,6 +9,8 @@ class SpyHunter
 {
 private:
 	SdlController _sdl;
+	int _score = 0;
+	double _delta;
 
 	struct RoadData {
 		int start = INITIAL_ROAD_START;
