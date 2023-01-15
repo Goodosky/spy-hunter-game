@@ -9,6 +9,7 @@ class SpyHunter
 {
 private:
 	double _score, _delta, _speed, _elapsedMapUpdate;
+	bool _score_paused;
 	SdlController _sdl;
 	RoadData _road[SCREEN_HEIGHT + 1];
 	Sprite _player;
@@ -21,6 +22,7 @@ public:
 
 	void drawPlayer();
 	void turn(Turning direction);
+	void handleCollisions();
 
 	void drawRoad();
 	void addRoadLevel();

@@ -13,6 +13,7 @@ void SpyHunter::startGame() {
 	// Set default values
 	_score = 0;
 	_elapsedMapUpdate = MAP_REFRESH_INTERVAL;
+	_score_paused = false;
 
 	for (int y = 0; y <= SCREEN_HEIGHT; y++) {
 		_road[y].start = INITIAL_ROAD_START;
@@ -20,9 +21,10 @@ void SpyHunter::startGame() {
 	}
 
 	// Create player
-	_player.x = SCREEN_WIDTH / 2 - (INITIAL_ROAD_END - INITIAL_ROAD_START) / 2; // (in center)
+	_player.x = SCREEN_WIDTH / 2; // (in center)
 	_player.y = SCREEN_HEIGHT - 100; // 100px from bottom
 	_player.surface = _sdl.loadBmp("./media/car.bmp");
+	_player.lives = 1;
 }
 
 
@@ -41,9 +43,31 @@ void SpyHunter::turn(Turning direction) {
 	_turning = direction;
 }
 
+void SpyHunter::handleCollisions() {
+	// ROAD
+	int distance_from_left_edge = _player.x - _player.surface->w / 2 - _road[(int)_player.y].start;
+	int distance_from_right_edge = _road[(int)_player.y].end - _player.x - _player.surface->w / 2;
+
+	if (distance_from_left_edge < -ROADSIDE_WIDTH || distance_from_right_edge < -ROADSIDE_WIDTH) {
+		// the player is off the road
+		_player.lives--;
+	}
+	else if (distance_from_left_edge < 0 || distance_from_right_edge < 0) {
+		// the player is on the roadside
+		_score_paused = true;
+	}
+	else _score_paused = false;
+}
+
+
 void SpyHunter::drawRoad() {
 	for (int y = SCREEN_HEIGHT; y >= 0; y--) {
 		int road_width = _road[y].end - _road[y].start;
+
+		// Draw roadside
+		_sdl.drawRectangle(_road[y].start - ROADSIDE_WIDTH, y, road_width + 2 * ROADSIDE_WIDTH, 1, _sdl.colors.roadside);
+
+		// Draw asphalt
 		_sdl.drawRectangle(_road[y].start, y, road_width, 1, _sdl.colors.road);
 	}
 }
@@ -96,18 +120,25 @@ void SpyHunter::updateRoad() {
 
 
 void SpyHunter::drawFrame(bool is_resuming) {
+	if (_player.lives == 0) {
+		endGame();
+		return;
+	}
+
 	_sdl.updateDelta(is_resuming);
 	_delta = _sdl.getDelta(); // delta in seconds
 	_elapsedMapUpdate += _delta;
 
 	_sdl.clearScreen();
 	_sdl.updateDeltaBasedValues();
-	_score += _delta;
+	if (!_score_paused) _score += _delta;
 
 	if (_elapsedMapUpdate >= MAP_REFRESH_INTERVAL) {
 		updateRoad();
 		_elapsedMapUpdate = 0;
 	}
+
+	handleCollisions();
 
 	drawRoad();
 	drawPlayer();

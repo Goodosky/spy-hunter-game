@@ -32,6 +32,7 @@ SdlController::SdlController() {
 	colors.legend_bg = SDL_MapRGB(screen->format, LEGEND_BG_COLOR.r, LEGEND_BG_COLOR.g, LEGEND_BG_COLOR.b);
 	colors.road = SDL_MapRGB(screen->format, ROAD_COLOR.r, ROAD_COLOR.g, ROAD_COLOR.b);
 	colors.grass = SDL_MapRGB(screen->format, GRASS_COLOR.r, GRASS_COLOR.g, GRASS_COLOR.b);
+	colors.roadside = SDL_MapRGB(screen->format, ROADSIDE_COLOR.r, ROADSIDE_COLOR.g, ROADSIDE_COLOR.b);
 
 	// Set deflaut value for private variables
 	_deltaTime = _worldTime = _fpsTimer = _fps = 0;
@@ -50,6 +51,7 @@ void SdlController::refreshScreen() {
 	SDL_RenderCopy(_renderer, _scrtex, NULL, NULL);
 	SDL_RenderPresent(_renderer);
 }
+
 
 SDL_Surface* SdlController::loadBmp(const char* filepath) {
 	// wczytanie obrazka cs8x8.bmp

@@ -20,7 +20,7 @@ private:
 
 public:
 	struct Colors {
-		int legend_bg, road, grass;
+		int legend_bg, road, grass, roadside;
 	} colors;
 
 	SdlController();
