@@ -66,6 +66,11 @@ SDL_Surface* SdlController::loadBmp(const char* filepath) {
 	return bmp;
 }
 
+
+double SdlController::getDelta() {
+	return _deltaTime;
+};
+
 void SdlController::updateDelta(bool is_resuming = false) {
 	if (is_resuming) {
 		_t1 = SDL_GetTicks();
@@ -78,8 +83,7 @@ void SdlController::updateDelta(bool is_resuming = false) {
 	}
 };
 
-void SdlController::updateDeltaBasedValues() {
-	_worldTime += _deltaTime;
+void SdlController::updateFps() {
 	_fpsTimer += _deltaTime;
 
 	if (_fpsTimer > FPS_COUNTER_REFRESH_INTERVAL) {
@@ -131,17 +135,19 @@ void SdlController::drawRectangle(int x, int y, int width, int height, Uint32 co
 	SDL_FillRect(screen, &rect, color);
 }
 
-void SdlController::drawLegend(double score) {
-	drawRectangle(LEGEND_OFFSET_X, LEGEND_OFFSET_Y, SCREEN_WIDTH - 2 * LEGEND_OFFSET_X, 3*8 + 2*LEGEND_PADDING, colors.legend_bg);
 
-	sprintf(_legendText, "czas trwania = %.1lf s  %.0lf klatek / s", _worldTime, _fps);
+void SdlController::drawLegend(double score, double world_time) {
+	drawRectangle(LEGEND_OFFSET_X, LEGEND_OFFSET_Y, SCREEN_WIDTH - 2 * LEGEND_OFFSET_X, 3 * 8 + 2 * LEGEND_PADDING, colors.legend_bg);
+
+	updateFps();
+	sprintf(_legendText, "czas trwania = %.1lf s  %.0lf klatek / s", world_time, _fps);
 	int x = screen->w / 2 - strlen(_legendText) * 8 / 2;
 	int y = LEGEND_OFFSET_Y + LEGEND_PADDING;
 	drawString(x, y, _legendText);
 
 	sprintf(_legendText, "Score: %.lf", score);
 	x = screen->w / 2 - strlen(_legendText) * 8 / 2;
-	y = LEGEND_OFFSET_Y + 3*8;
+	y = LEGEND_OFFSET_Y + 3 * 8;
 	drawString(x, y, _legendText);
 
 	drawCompletedRequirements();
@@ -153,14 +159,9 @@ void SdlController::drawCompletedRequirements() {
 	sprintf(_completedReqsText, COMPLETED_REQUIREMENTS);
 	int string_width = strlen(_completedReqsText) * 8;
 
-	drawRectangle(SCREEN_WIDTH - string_width - 2*LEGEND_PADDING, SCREEN_HEIGHT - 8 - 2*LEGEND_PADDING, string_width + 2*LEGEND_PADDING, 8 + 2*LEGEND_PADDING, colors.legend_bg);
+	drawRectangle(SCREEN_WIDTH - string_width - 2 * LEGEND_PADDING, SCREEN_HEIGHT - 8 - 2 * LEGEND_PADDING, string_width + 2 * LEGEND_PADDING, 8 + 2 * LEGEND_PADDING, colors.legend_bg);
 	drawString(SCREEN_WIDTH - string_width - LEGEND_PADDING, SCREEN_HEIGHT - LEGEND_PADDING - 8, _completedReqsText);
 }
-
-
-double SdlController::getDelta() {
-	return _deltaTime;
-};
 
 
 void SdlController::freeAllSurfacesAndQuit() {

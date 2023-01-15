@@ -35,21 +35,12 @@ int main(int argc, char** argv) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
-				case SDLK_p:
-					is_pause = !is_pause;
-					is_resuming = true;
-					break;
-				case SDLK_RIGHT:
-					game.turn(right);
-					break;
-				case SDLK_LEFT:
-					game.turn(left);
-					break;
-				case SDLK_ESCAPE:
-					quit = true;
-					break;
-				}
-				break;
+				case SDLK_p: is_pause = !is_pause; is_resuming = true; break;
+				case SDLK_n: game.restartGame(); break;
+				case SDLK_RIGHT: game.turn(right); break;
+				case SDLK_LEFT: game.turn(left); break;
+				case SDLK_ESCAPE: quit = true; break;
+				} break;
 			case SDL_KEYUP:
 				if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_LEFT)
 					game.turn(off);

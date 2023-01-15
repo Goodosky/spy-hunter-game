@@ -21,10 +21,25 @@ struct Sprite {
 	SDL_Surface* surface;
 };
 
+struct Result {
+	int score;
+	double time;
+};
+
+struct Scoreboard {
+	int number_of_results;
+	Result* results;
+};
+
 enum Turning {
 	off,
 	right,
 	left,
+};
+
+enum Sorting {
+	by_points,
+	by_time,
 };
 
 // Screen
@@ -50,7 +65,7 @@ enum Turning {
 #define TURN_SPEED 450
 
 // Game - others
-#define FRAME_CAP 60
+#define FRAME_CAP false
 #define MAP_REFRESH_INTERVAL 0.1 // in seconds
 
 

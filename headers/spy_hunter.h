@@ -8,10 +8,10 @@
 class SpyHunter
 {
 private:
-	double _score, _delta, _speed, _elapsedMapUpdate;
+	double _score, _delta, _elapsedMapUpdate, _worldTime;
 	bool _score_paused;
 	SdlController _sdl;
-	RoadData _road[SCREEN_HEIGHT + 1];
+	RoadData _road[SCREEN_HEIGHT];
 	Sprite _player;
 	Turning _turning = off;
 
@@ -19,6 +19,8 @@ public:
 	SpyHunter();
 
 	void startGame();
+	void restartGame();
+	void endGame();
 
 	void drawPlayer();
 	void turn(Turning direction);
@@ -31,8 +33,9 @@ public:
 	void drawFrame(bool is_resuming);
 	void drawSprite(Sprite sprite);
 
-
-	void endGame();
+	void drawScoreboard(int x, int y, int skip = 0, Sorting sort_type = by_points);
+	void saveToScoreboard();
+	int loadScoreboard(Scoreboard* scoreboard);
 };
 
 
