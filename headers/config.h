@@ -35,6 +35,8 @@ enum Turning {
 #define FPS_COUNTER_REFRESH_INTERVAL 0.5 // in seconds
 #define LEGEND_OFFSET_X 100
 #define LEGEND_OFFSET_Y 5
+#define LEGEND_PADDING 7
+#define COMPLETED_REQUIREMENTS "g, h, i, k, o"
 
 // Game - road
 #define INITIAL_ROAD_START 150
@@ -50,6 +52,7 @@ enum Turning {
 // Game - others
 #define FRAME_CAP 60
 #define MAP_REFRESH_INTERVAL 0.1 // in seconds
+
 
 // Colors
 const Color LEGEND_BG_COLOR = { 0x11, 0x11, 0xCC };

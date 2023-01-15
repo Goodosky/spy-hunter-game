@@ -132,17 +132,29 @@ void SdlController::drawRectangle(int x, int y, int width, int height, Uint32 co
 }
 
 void SdlController::drawLegend(double score) {
-	drawRectangle(LEGEND_OFFSET_X, LEGEND_OFFSET_Y, SCREEN_WIDTH - 2 * LEGEND_OFFSET_X, 36, colors.legend_bg);
+	drawRectangle(LEGEND_OFFSET_X, LEGEND_OFFSET_Y, SCREEN_WIDTH - 2 * LEGEND_OFFSET_X, 3*8 + 2*LEGEND_PADDING, colors.legend_bg);
 
 	sprintf(_legendText, "czas trwania = %.1lf s  %.0lf klatek / s", _worldTime, _fps);
 	int x = screen->w / 2 - strlen(_legendText) * 8 / 2;
-	int y = LEGEND_OFFSET_Y + 5;
+	int y = LEGEND_OFFSET_Y + LEGEND_PADDING;
 	drawString(x, y, _legendText);
 
 	sprintf(_legendText, "Score: %.lf", score);
 	x = screen->w / 2 - strlen(_legendText) * 8 / 2;
-	y = LEGEND_OFFSET_Y + 21;
+	y = LEGEND_OFFSET_Y + 3*8;
 	drawString(x, y, _legendText);
+
+	drawCompletedRequirements();
+}
+
+void SdlController::drawCompletedRequirements() {
+	char _completedReqsText[128];
+
+	sprintf(_completedReqsText, COMPLETED_REQUIREMENTS);
+	int string_width = strlen(_completedReqsText) * 8;
+
+	drawRectangle(SCREEN_WIDTH - string_width - 2*LEGEND_PADDING, SCREEN_HEIGHT - 8 - 2*LEGEND_PADDING, string_width + 2*LEGEND_PADDING, 8 + 2*LEGEND_PADDING, colors.legend_bg);
+	drawString(SCREEN_WIDTH - string_width - LEGEND_PADDING, SCREEN_HEIGHT - LEGEND_PADDING - 8, _completedReqsText);
 }
 
 

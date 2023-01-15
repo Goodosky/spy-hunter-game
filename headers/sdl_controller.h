@@ -39,6 +39,7 @@ public:
 	void drawPixel(int x, int y, Uint32 color);
 
 	void drawLegend(double score);
+	void drawCompletedRequirements();
 
 	double getDelta();
 
