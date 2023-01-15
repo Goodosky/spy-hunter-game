@@ -22,9 +22,9 @@ public:
 	void drawPlayer();
 	void turn(Turning direction);
 
-	void updateRoad();
-	void addRoadLevel();
 	void drawRoad();
+	void addRoadLevel();
+	void updateRoad();
 
 	void drawFrame(bool is_resuming);
 	void drawSprite(Sprite sprite);

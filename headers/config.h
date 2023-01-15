@@ -51,8 +51,6 @@ enum Turning {
 #define MAP_REFRESH_INTERVAL 0.1 // in seconds
 
 // Colors
-
-
 const Color LEGEND_BG_COLOR = { 0x11, 0x11, 0xCC };
 const Color ROAD_COLOR = { 0x00, 0x00, 0x00 };
 const Color GRASS_COLOR = { 0x00, 0x9A, 0x17 };
