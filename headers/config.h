@@ -51,7 +51,7 @@ enum Sorting {
 #define LEGEND_OFFSET_X 100
 #define LEGEND_OFFSET_Y 5
 #define LEGEND_PADDING 7
-#define COMPLETED_REQUIREMENTS "g, h, i, k, o"
+#define COMPLETED_REQUIREMENTS "h, i, o"
 
 // Game - road
 #define INITIAL_ROAD_START 150

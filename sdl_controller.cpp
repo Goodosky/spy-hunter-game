@@ -1,4 +1,4 @@
-#include "headers/config.h"
+﻿#include "headers/config.h"
 #include "headers/sdl_controller.h"
 
 SdlController::SdlController() {
@@ -47,7 +47,6 @@ void SdlController::clearScreen() {
 
 void SdlController::refreshScreen() {
 	SDL_UpdateTexture(_scrtex, NULL, screen->pixels, screen->pitch);
-	//		SDL_RenderClear(renderer);
 	SDL_RenderCopy(_renderer, _scrtex, NULL, NULL);
 	SDL_RenderPresent(_renderer);
 }

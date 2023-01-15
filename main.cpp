@@ -1,8 +1,4 @@
 #define _USE_MATH_DEFINES
-#include<math.h>
-#include<stdio.h>
-#include<string.h>
-
 
 #include "headers/config.h"
 #include "headers/spy_hunter.h"
@@ -15,12 +11,11 @@ extern "C"
 
 int main(int argc, char** argv) {
 	bool quit, is_pause, is_resuming;
+	double t1, t2, delta;
 	SDL_Event event;
 	SpyHunter game;
 
 	quit = is_pause = is_resuming = false;
-
-	double t1, t2, delta;
 	t1 = SDL_GetTicks();
 
 	while (!quit) {
@@ -35,8 +30,8 @@ int main(int argc, char** argv) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
-				case SDLK_p: is_pause = !is_pause; is_resuming = true; break;
 				case SDLK_n: game.restartGame(); break;
+				case SDLK_p: is_pause = !is_pause; is_resuming = true; break;
 				case SDLK_RIGHT: game.turn(right); break;
 				case SDLK_LEFT: game.turn(left); break;
 				case SDLK_ESCAPE: quit = true; break;

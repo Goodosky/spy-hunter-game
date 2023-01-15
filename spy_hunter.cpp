@@ -1,8 +1,6 @@
 #include "headers/spy_hunter.h"
 #include <cstdlib>
 #include <ctime> 
-#include <iostream>
-using namespace std;
 
 SpyHunter::SpyHunter() {
 	srand(time(NULL)); // current time as seed for random generator
@@ -228,7 +226,9 @@ void SpyHunter::drawScoreboard(int x, int y, int skip, Sorting sort_type) {
 	y += 2 * 8;
 	_sdl.drawString(x, y, "sortuj po liczbie punktow (klawisz p) lub po czasie (klawisz t)");
 
-	// Draw scoreboard
+	// Sort
+	sortScoreboard(scoreboard, sort_type);
+
 	for (int i = skip; i < scoreboard.number_of_results; i++) {
 		y += 2 * 8;
 		sprintf(txt, "%d) Punkty: %.d   Czas: %.1lf s", i + 1, scoreboard.results[i].score, scoreboard.results[i].time);
@@ -254,6 +254,8 @@ void SpyHunter::saveToScoreboard() {
 
 		// Add new_result to results
 		new_scoreboard.results[scoreboard.number_of_results] = new_result;
+
+		delete[] scoreboard.results;
 	}
 	else {
 		// Scoreboard.bin doesn't exist so this is the first result in our scoreboard
@@ -269,6 +271,7 @@ void SpyHunter::saveToScoreboard() {
 		fwrite(&new_scoreboard.results[i], sizeof(Result), 1, file);
 	}
 	fclose(file);
+	delete[] new_scoreboard.results;
 }
 
 int SpyHunter::loadScoreboard(struct Scoreboard* scoreboard) {
@@ -283,4 +286,23 @@ int SpyHunter::loadScoreboard(struct Scoreboard* scoreboard) {
 	fclose(file);
 
 	return 0;
+}
+
+void SpyHunter::sortScoreboard(Scoreboard& scoreboard, Sorting sort_type) {
+	Result temp;
+
+	for (int i = 0; i < scoreboard.number_of_results; i++) {
+		for (int j = 0; j < scoreboard.number_of_results - 1; j++) {
+			if (sort_type == by_points && scoreboard.results[j].score < scoreboard.results[j + 1].score) {
+				temp = scoreboard.results[j];
+				scoreboard.results[j] = scoreboard.results[j + 1];
+				scoreboard.results[j + 1] = temp;
+			}
+			else if (sort_type == by_points && scoreboard.results[j].time < scoreboard.results[j + 1].time) {
+				temp = scoreboard.results[j];
+				scoreboard.results[j] = scoreboard.results[j + 1];
+				scoreboard.results[j + 1] = temp;
+			}
+		}
+	}
 }

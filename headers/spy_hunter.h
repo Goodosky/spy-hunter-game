@@ -36,7 +36,7 @@ public:
 	void drawScoreboard(int x, int y, int skip = 0, Sorting sort_type = by_points);
 	void saveToScoreboard();
 	int loadScoreboard(Scoreboard* scoreboard);
+	void sortScoreboard(Scoreboard& scoreboard, Sorting sort_type);
 };
-
 
 #endif
